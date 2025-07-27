@@ -15,7 +15,20 @@ const JWT_SECRET = 'your-secret-key-change-in-production';
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Cache control for static files (prevents aggressive caching during development)
+app.use(express.static(path.join(__dirname, 'public'), {
+  etag: false,
+  lastModified: false,
+  setHeaders: (res, path) => {
+    // Disable caching for HTML, CSS, and JS files during development
+    if (path.endsWith('.html') || path.endsWith('.css') || path.endsWith('.js')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+}));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -587,6 +600,10 @@ app.get('/api/dashboard', authenticateToken, (req, res) => {
 
 // Serve the main page
 app.get('/', (req, res) => {
+  // Set cache control headers to prevent caching during development
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 

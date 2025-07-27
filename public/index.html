@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>SecureBank - Your Digital Banking Partner</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -89,6 +92,9 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
+                <button id="sidebarToggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <h1><i class="fas fa-university"></i> SecureBank</h1>
             </div>
             <div class="header-right">
@@ -102,35 +108,35 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <ul class="nav-menu">
-                <li class="nav-item active" data-section="dashboard">
+                <li class="nav-item active" data-section="dashboard" data-tooltip="Dashboard">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </li>
-                <li class="nav-item" data-section="accounts">
+                <li class="nav-item" data-section="accounts" data-tooltip="Accounts">
                     <i class="fas fa-wallet"></i>
                     <span>Accounts</span>
                 </li>
-                <li class="nav-item" data-section="transfer">
+                <li class="nav-item" data-section="transfer" data-tooltip="Transfer">
                     <i class="fas fa-exchange-alt"></i>
                     <span>Transfer</span>
                 </li>
-                <li class="nav-item" data-section="transactions">
+                <li class="nav-item" data-section="transactions" data-tooltip="Transactions">
                     <i class="fas fa-list"></i>
                     <span>Transactions</span>
                 </li>
-                <li class="nav-item" data-section="bills">
+                <li class="nav-item" data-section="bills" data-tooltip="Pay Bills">
                     <i class="fas fa-file-invoice-dollar"></i>
                     <span>Pay Bills</span>
                 </li>
-                <li class="nav-item" data-section="loans">
+                <li class="nav-item" data-section="loans" data-tooltip="Loans">
                     <i class="fas fa-hand-holding-usd"></i>
                     <span>Loans</span>
                 </li>
-                <li class="nav-item" data-section="investments">
+                <li class="nav-item" data-section="investments" data-tooltip="Investments">
                     <i class="fas fa-chart-line"></i>
                     <span>Investments</span>
                 </li>
-                <li class="nav-item" data-section="profile">
+                <li class="nav-item" data-section="profile" data-tooltip="Profile">
                     <i class="fas fa-user-circle"></i>
                     <span>Profile</span>
                 </li>

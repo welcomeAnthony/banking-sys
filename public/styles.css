@@ -294,10 +294,35 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 .header-left h1 {
     color: var(--primary-color);
     font-size: 1.8rem;
     font-weight: 700;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-toggle:hover {
+    background: var(--bg-secondary);
+    color: var(--primary-color);
 }
 
 .header-right {
@@ -366,6 +391,61 @@ body {
     margin-right: 15px;
     font-size: 1.2rem;
     width: 20px;
+}
+
+/* Collapsed Sidebar Styles */
+.sidebar.collapsed {
+    width: 70px;
+    min-width: 70px;
+    padding: 30px 0;
+}
+
+.sidebar.collapsed .nav-item {
+    padding: 15px 25px;
+    justify-content: center;
+    position: relative;
+}
+
+.sidebar.collapsed .nav-item span {
+    display: none;
+}
+
+.sidebar.collapsed .nav-item i {
+    margin-right: 0;
+    font-size: 1.3rem;
+}
+
+/* Tooltip for collapsed sidebar */
+.sidebar.collapsed .nav-item:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    white-space: nowrap;
+    z-index: 1000;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Dashboard section with collapsed sidebar */
+.dashboard-section.sidebar-collapsed {
+    grid-template-columns: 70px 1fr;
+}
+
+/* Transition for smooth collapse */
+.sidebar {
+    transition: width 0.3s ease, min-width 0.3s ease;
+}
+
+.dashboard-section {
+    transition: grid-template-columns 0.3s ease;
 }
 
 /* Main Content */
@@ -895,10 +975,39 @@ body {
         height: calc(100vh - 70px);
         z-index: 999;
         transition: left 0.3s ease;
+        width: 280px !important;
+        min-width: 280px !important;
     }
     
     .sidebar.active {
         left: 0;
+    }
+    
+    .sidebar.collapsed {
+        width: 280px !important;
+        min-width: 280px !important;
+    }
+    
+    .sidebar.collapsed .nav-item {
+        padding: 15px 30px;
+        justify-content: flex-start;
+    }
+    
+    .sidebar.collapsed .nav-item span {
+        display: inline;
+    }
+    
+    .sidebar.collapsed .nav-item i {
+        margin-right: 15px;
+        font-size: 1.2rem;
+    }
+    
+    .sidebar.collapsed .nav-item:hover::after {
+        display: none;
+    }
+    
+    .dashboard-section.sidebar-collapsed {
+        grid-template-columns: 1fr;
     }
     
     .main-content {

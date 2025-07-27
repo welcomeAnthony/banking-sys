@@ -56,6 +56,11 @@ class BankingApp {
             this.handleLogout();
         });
 
+        // Sidebar toggle
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            this.toggleSidebar();
+        });
+
         // Navigation
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', (e) => {
@@ -134,6 +139,29 @@ class BankingApp {
         document.getElementById('loadTransactions').addEventListener('click', () => {
             this.loadTransactions();
         });
+
+        // Window resize handler for responsive sidebar
+        window.addEventListener('resize', () => {
+            this.handleWindowResize();
+        });
+
+        // Click outside sidebar to close on mobile
+        document.addEventListener('click', (e) => {
+            const isMobile = window.innerWidth <= 1024;
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            
+            if (isMobile && sidebar && sidebar.classList.contains('active')) {
+                const isClickInsideSidebar = sidebar.contains(e.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(e.target);
+                
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('active');
+                    const toggleIcon = sidebarToggle.querySelector('i');
+                    toggleIcon.classList.replace('fa-times', 'fa-bars');
+                }
+            }
+        });
     }
 
     setupTheme() {
@@ -175,6 +203,91 @@ class BankingApp {
         document.getElementById('authSection').style.display = 'none';
         document.getElementById('dashboardSection').style.display = 'grid';
         document.getElementById('userWelcome').textContent = `Welcome, ${this.user.firstName}!`;
+        this.initializeSidebarState();
+    }
+
+    toggleSidebar() {
+        const dashboardSection = document.getElementById('dashboardSection');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const toggleIcon = sidebarToggle.querySelector('i');
+        
+        // Check if we're on mobile (screen width <= 1024px)
+        const isMobile = window.innerWidth <= 1024;
+        
+        if (isMobile) {
+            // On mobile, toggle the active class to show/hide sidebar
+            sidebar.classList.toggle('active');
+            
+            // Update toggle icon for mobile
+            if (sidebar.classList.contains('active')) {
+                toggleIcon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                toggleIcon.classList.replace('fa-times', 'fa-bars');
+            }
+        } else {
+            // On desktop, toggle collapsed class
+            sidebar.classList.toggle('collapsed');
+            dashboardSection.classList.toggle('sidebar-collapsed');
+            
+            // Update toggle icon for desktop
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.replace('fa-bars', 'fa-chevron-right');
+            } else {
+                toggleIcon.classList.replace('fa-chevron-right', 'fa-bars');
+            }
+            
+            // Save state to localStorage
+            localStorage.setItem('bankingSidebarCollapsed', sidebar.classList.contains('collapsed'));
+        }
+    }
+
+    initializeSidebarState() {
+        const isMobile = window.innerWidth <= 1024;
+        
+        if (!isMobile) {
+            const isCollapsed = localStorage.getItem('bankingSidebarCollapsed') === 'true';
+            if (isCollapsed) {
+                const dashboardSection = document.getElementById('dashboardSection');
+                const sidebar = document.querySelector('.sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                const toggleIcon = sidebarToggle.querySelector('i');
+                
+                sidebar.classList.add('collapsed');
+                dashboardSection.classList.add('sidebar-collapsed');
+                toggleIcon.classList.replace('fa-bars', 'fa-chevron-right');
+            }
+        }
+    }
+
+    handleWindowResize() {
+        const dashboardSection = document.getElementById('dashboardSection');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const toggleIcon = sidebarToggle.querySelector('i');
+        const isMobile = window.innerWidth <= 1024;
+        
+        if (isMobile) {
+            // Switch to mobile mode
+            sidebar.classList.remove('collapsed');
+            dashboardSection.classList.remove('sidebar-collapsed');
+            
+            // Reset to hamburger icon
+            toggleIcon.className = 'fas fa-bars';
+        } else {
+            // Switch to desktop mode
+            sidebar.classList.remove('active');
+            
+            // Restore collapsed state from localStorage
+            const isCollapsed = localStorage.getItem('bankingSidebarCollapsed') === 'true';
+            if (isCollapsed) {
+                sidebar.classList.add('collapsed');
+                dashboardSection.classList.add('sidebar-collapsed');
+                toggleIcon.className = 'fas fa-chevron-right';
+            } else {
+                toggleIcon.className = 'fas fa-bars';
+            }
+        }
     }
 
     switchAuthTab(tab) {
