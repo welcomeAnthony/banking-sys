@@ -784,6 +784,14 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         document.querySelectorAll('.modal.active').forEach(modal => {
             modal.classList.remove('active');
+            // Reset forms when closing modals
+            if (modal.id === 'loanModal') {
+                document.getElementById('loanApplicationForm').reset();
+            } else if (modal.id === 'newAccountModal') {
+                document.getElementById('newAccountForm').reset();
+            } else if (modal.id === 'investmentModal') {
+                document.getElementById('investmentForm').reset();
+            }
         });
     }
 });
@@ -792,6 +800,14 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal')) {
         e.target.classList.remove('active');
+        // Reset forms when closing modals
+        if (e.target.id === 'loanModal') {
+            document.getElementById('loanApplicationForm').reset();
+        } else if (e.target.id === 'newAccountModal') {
+            document.getElementById('newAccountForm').reset();
+        } else if (e.target.id === 'investmentModal') {
+            document.getElementById('investmentForm').reset();
+        }
     }
 });
 
