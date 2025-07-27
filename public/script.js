@@ -110,6 +110,16 @@ class BankingApp {
             this.handleLoanApplication();
         });
 
+        // Add direct event listeners for modal close buttons (backup for onclick)
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.close-btn') && e.target.closest('#loanModal')) {
+                this.closeLoanModal();
+            }
+            if (e.target.classList.contains('secondary-btn') && e.target.closest('#loanModal')) {
+                this.closeLoanModal();
+            }
+        });
+
         // Investments
         document.getElementById('newInvestmentBtn').addEventListener('click', () => {
             this.showInvestmentModal();
@@ -424,6 +434,14 @@ class BankingApp {
 
     showNewAccountModal() {
         document.getElementById('newAccountModal').classList.add('active');
+        
+        // Add direct event listeners after modal is shown
+        const closeBtn = document.querySelector('#newAccountModal .close-btn');
+        
+        if (closeBtn) {
+            closeBtn.removeEventListener('click', this.closeNewAccountModal);
+            closeBtn.addEventListener('click', () => this.closeNewAccountModal());
+        }
     }
 
     closeNewAccountModal() {
@@ -639,11 +657,40 @@ class BankingApp {
 
     showLoanModal() {
         document.getElementById('loanModal').classList.add('active');
+        
+        // Add direct event listeners after modal is shown
+        const closeBtn = document.querySelector('#loanModal .close-btn');
+        const cancelBtn = document.querySelector('#loanModal .secondary-btn');
+        
+        if (closeBtn) {
+            closeBtn.removeEventListener('click', this.closeLoanModal); // Remove any existing listener
+            closeBtn.addEventListener('click', () => this.closeLoanModal());
+        }
+        
+        if (cancelBtn) {
+            cancelBtn.removeEventListener('click', this.closeLoanModal); // Remove any existing listener  
+            cancelBtn.addEventListener('click', () => this.closeLoanModal());
+        }
     }
 
     closeLoanModal() {
-        document.getElementById('loanModal').classList.remove('active');
-        document.getElementById('loanApplicationForm').reset();
+        console.log('closeLoanModal called'); // Debug log
+        const modal = document.getElementById('loanModal');
+        const form = document.getElementById('loanApplicationForm');
+        
+        if (modal) {
+            modal.classList.remove('active');
+            console.log('Modal class removed'); // Debug log
+        } else {
+            console.error('loanModal element not found');
+        }
+        
+        if (form) {
+            form.reset();
+            console.log('Form reset'); // Debug log
+        } else {
+            console.error('loanApplicationForm element not found');
+        }
     }
 
     async handleLoanApplication() {
@@ -704,6 +751,20 @@ class BankingApp {
 
     showInvestmentModal() {
         document.getElementById('investmentModal').classList.add('active');
+        
+        // Add direct event listeners after modal is shown
+        const closeBtn = document.querySelector('#investmentModal .close-btn');
+        const cancelBtn = document.querySelector('#investmentModal .secondary-btn');
+        
+        if (closeBtn) {
+            closeBtn.removeEventListener('click', this.closeInvestmentModal);
+            closeBtn.addEventListener('click', () => this.closeInvestmentModal());
+        }
+        
+        if (cancelBtn) {
+            cancelBtn.removeEventListener('click', this.closeInvestmentModal);  
+            cancelBtn.addEventListener('click', () => this.closeInvestmentModal());
+        }
     }
 
     closeInvestmentModal() {
@@ -822,19 +883,29 @@ class BankingApp {
 
 // Global functions for modal management
 function closeNewAccountModal() {
-    app.closeNewAccountModal();
+    if (window.app && window.app.closeNewAccountModal) {
+        window.app.closeNewAccountModal();
+    }
 }
 
 function closeLoanModal() {
-    app.closeLoanModal();
+    console.log('Global closeLoanModal called'); // Debug log
+    if (window.app && window.app.closeLoanModal) {
+        window.app.closeLoanModal();
+    } else {
+        console.error('App or closeLoanModal method not available');
+    }
 }
 
 function closeInvestmentModal() {
-    app.closeInvestmentModal();
+    if (window.app && window.app.closeInvestmentModal) {
+        window.app.closeInvestmentModal();
+    }
 }
 
 // Initialize the application
 const app = new BankingApp();
+window.app = app; // Make app globally accessible
 
 // Add keyboard shortcuts
 document.addEventListener('keydown', (e) => {
