@@ -28,6 +28,9 @@ A comprehensive banking system web application built with Node.js, JavaScript, a
 - **Rate Limiting** - Protection against brute force attacks
 - **CORS Protection** - Cross-origin request security
 - **Helmet Security** - Additional security headers
+- **Balance Validation** - Prevents operations exceeding account balance
+- **Same-Account Transfer Prevention** - Blocks transfers to the same account
+- **Investment Account Validation** - Ensures sufficient funds before investment
 
 ## 🚀 Quick Start
 
@@ -55,6 +58,10 @@ A comprehensive banking system web application built with Node.js, JavaScript, a
 4. **Access the application**
    Open your browser and navigate to: `http://localhost:3000`
 
+5. **Login with admin credentials**
+   - Email: `admin@gmail.com`
+   - Password: `admin`
+
 ### Development Mode
 
 For development with auto-restart:
@@ -77,10 +84,11 @@ npm run dev
 - Monitor account balances
 
 #### Transfers & Transactions
-- **Transfer Money** - Send money to other accounts
+- **Transfer Money** - Send money to other accounts with balance validation
+- **Same-Account Prevention** - System prevents transfers to the same account
 - **Deposit Cash** - Add money to your accounts
-- **Withdraw Cash** - Remove money from your accounts
-- **View History** - See all your transactions
+- **Withdraw Cash** - Remove money from your accounts (with balance checks)
+- **View History** - See all your transactions with detailed records
 
 #### Bill Payments
 - Pay electricity, water, gas, internet, phone bills
@@ -94,10 +102,13 @@ npm run dev
 - Track loan applications and status
 
 #### Investments
-- Fixed Deposits (5.5% annually)
-- Mutual Funds (12.0% annually)
-- Stocks (15.0% annually)
-- Bonds (7.0% annually)
+- **Account-Based Investments** - Select specific accounts for investments
+- **Balance Validation** - Ensures sufficient funds before investment
+- **Fixed Deposits** (5.5% annually)
+- **Mutual Funds** (12.0% annually)
+- **Stocks** (15.0% annually)
+- **Bonds** (7.0% annually)
+- **Transaction Records** - All investments create transaction history
 
 ### Theme Switching
 - Click the theme toggle button (🌙/☀️) in the top-right corner
@@ -180,21 +191,31 @@ The application features a comprehensive theme system:
 5. **Audit Logging** - Implement transaction logging
 6. **Multi-factor Authentication** - Add 2FA for enhanced security
 
-## 📝 Sample Data
+## 📝 Sample Data & Login
 
-The application starts with empty data. You can:
-1. Register new users
-2. Create accounts automatically upon registration
+The application includes a pre-configured admin account for testing:
+
+**Admin Login Credentials:**
+- **Email**: `admin@gmail.com`
+- **Password**: `admin`
+- **Starting Balance**: $10,000 in checking account
+
+You can also:
+1. Register new users with the registration form
+2. Create additional accounts automatically upon registration
 3. Perform transactions to see the system in action
+4. Test all banking features with proper balance validation
 
 ## 🌟 Features Highlights
 
 ### Advanced Banking Functions
 - **Multi-account transfers** with real-time balance updates
+- **Same-account transfer prevention** for data integrity
 - **Comprehensive transaction tracking** with detailed history
 - **Professional loan application system** with different rates
-- **Investment portfolio management** with various options
+- **Investment portfolio management** with account-based funding
 - **Bill payment system** supporting multiple bill types
+- **Balance validation** across all financial operations
 
 ### Professional UI/UX
 - **Responsive design** that works on all devices
@@ -222,6 +243,29 @@ The application starts with empty data. You can:
 - Update CSS custom properties in `:root` and `[data-theme="dark"]`
 - Colors, shadows, and spacing can be easily customized
 - Add new theme variants by extending the theme system
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+**Login Problems:**
+- Ensure you're using the correct admin credentials: `admin@gmail.com` / `admin`
+- Check that the server is running on port 3000
+- Clear browser cache if experiencing issues
+
+**Server Won't Start:**
+- Make sure port 3000 is not already in use
+- Run `npm install` to ensure all dependencies are installed
+- Check Node.js version (requires v14 or higher)
+
+**Transfer/Investment Errors:**
+- Verify sufficient account balance before transactions
+- Cannot transfer to the same account (this is by design)
+- Ensure you've selected a source account for investments
+
+**Performance Issues:**
+- This is an in-memory database demo - restart server to reset data
+- For production, implement a proper database solution
 
 ## 📧 Support
 
