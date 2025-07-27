@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank - Your Digital Banking Partner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle" class="theme-btn">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Login/Register Section -->
+    <div id="authSection" class="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1><i class="fas fa-university"></i> SecureBank</h1>
+                <p>Your trusted digital banking partner</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="register">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="registerFirstName" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="registerLastName" placeholder="Last Name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="registerPhone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-home"></i>
+                    <input type="text" id="registerAddress" placeholder="Address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="registerPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Banking Dashboard -->
+    <div id="dashboardSection" class="dashboard-section" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1><i class="fas fa-university"></i> SecureBank</h1>
+            </div>
+            <div class="header-right">
+                <span id="userWelcome" class="user-welcome"></span>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-section="accounts">
+                    <i class="fas fa-wallet"></i>
+                    <span>Accounts</span>
+                </li>
+                <li class="nav-item" data-section="transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transfer</span>
+                </li>
+                <li class="nav-item" data-section="transactions">
+                    <i class="fas fa-list"></i>
+                    <span>Transactions</span>
+                </li>
+                <li class="nav-item" data-section="bills">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Pay Bills</span>
+                </li>
+                <li class="nav-item" data-section="loans">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Loans</span>
+                </li>
+                <li class="nav-item" data-section="investments">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Investments</span>
+                </li>
+                <li class="nav-item" data-section="profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="page-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                    <p>Welcome to your banking overview</p>
+                </div>
+
+                <div class="dashboard-cards">
+                    <div class="card balance-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-wallet"></i> Total Balance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="balance-amount" id="totalBalance">$0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="card accounts-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-credit-card"></i> Active Accounts</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-number" id="accountsCount">0</div>
+                        </div>
+                    </div>
+
+                    <div class="card loans-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-hand-holding-usd"></i> Active Loans</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-number" id="activeLoans">0</div>
+                        </div>
+                    </div>
+
+                    <div class="card investments-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Total Investments</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="balance-amount" id="totalInvestments">$0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-transactions">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock"></i> Recent Transactions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentTransactionsList" class="transactions-list">
+                                <!-- Recent transactions will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Accounts Section -->
+            <section id="accounts" class="content-section">
+                <div class="page-header">
+                    <h2><i class="fas fa-wallet"></i> My Accounts</h2>
+                    <button id="newAccountBtn" class="primary-btn">
+                        <i class="fas fa-plus"></i> Open New Account
+                    </button>
+                </div>
+
+                <div id="accountsList" class="accounts-grid">
+                    <!-- Accounts will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Transfer Section -->
+            <section id="transfer" class="content-section">
+                <div class="page-header">
+                    <h2><i class="fas fa-exchange-alt"></i> Transfer Money</h2>
+                </div>
+
+                <div class="transfer-options">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-paper-plane"></i> Send Money</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="transferForm">
+                                <div class="form-group">
+                                    <label>From Account</label>
+                                    <select id="fromAccount" required>
+                                        <option value="">Select Account</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>To Account Number</label>
+                                    <input type="text" id="toAccount" placeholder="Enter account number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" id="transferAmount" step="0.01" min="0.01" placeholder="0.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description (Optional)</label>
+                                    <input type="text" id="transferDescription" placeholder="What's this for?">
+                                </div>
+                                <button type="submit" class="primary-btn">
+                                    <i class="fas fa-paper-plane"></i> Send Money
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-plus-circle"></i> Deposit Money</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="depositForm">
+                                <div class="form-group">
+                                    <label>Account</label>
+                                    <select id="depositAccount" required>
+                                        <option value="">Select Account</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" id="depositAmount" step="0.01" min="0.01" placeholder="0.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description (Optional)</label>
+                                    <input type="text" id="depositDescription" placeholder="Cash deposit">
+                                </div>
+                                <button type="submit" class="success-btn">
+                                    <i class="fas fa-plus-circle"></i> Deposit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-minus-circle"></i> Withdraw Money</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="withdrawForm">
+                                <div class="form-group">
+                                    <label>Account</label>
+                                    <select id="withdrawAccount" required>
+                                        <option value="">Select Account</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" id="withdrawAmount" step="0.01" min="0.01" placeholder="0.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description (Optional)</label>
+                                    <input type="text" id="withdrawDescription" placeholder="Cash withdrawal">
+                                </div>
+                                <button type="submit" class="danger-btn">
+                                    <i class="fas fa-minus-circle"></i> Withdraw
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="content-section">
+                <div class="page-header">
+                    <h2><i class="fas fa-list"></i> Transaction History</h2>
+                </div>
+
+                <div class="transaction-filters">
+                    <div class="form-group">
+                        <label>Account</label>
+                        <select id="transactionAccount">
+                            <option value="">All Accounts</option>
+                        </select>
+                    </div>
+                    <button id="loadTransactions" class="primary-btn">
+                        <i class="fas fa-search"></i> Load Transactions
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div id="transactionsList" class="transactions-table">
+                            <!-- Transactions will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bills Section -->
+            <section id="bills" class="content-section">
+                <div class="page-header">
+                    <h2><i class="fas fa-file-invoice-dollar"></i> Pay Bills</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-money-bill"></i> Bill Payment</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="billPaymentForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Pay From Account</label>
+                                    <select id="billAccount" required>
+                                        <option value="">Select Account</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Bill Type</label>
+                                    <select id="billType" required>
+                                        <option value="">Select Bill Type</option>
+                                        <option value="electricity">Electricity</option>
+                                        <option value="water">Water</option>
+                                        <option value="gas">Gas</option>
+                                        <option value="internet">Internet</option>
+                                        <option value="phone">Phone</option>
+                                        <option value="credit_card">Credit Card</option>
+                                        <option value="insurance">Insurance</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Biller Name</label>
+                                    <input type="text" id="billerName" placeholder="e.g., ABC Electric Company" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Bill Number</label>
+                                    <input type="text" id="billNumber" placeholder="Bill/Reference Number" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" id="billAmount" step="0.01" min="0.01" placeholder="0.00" required>
+                            </div>
+                            <button type="submit" class="primary-btn">
+                                <i class="fas fa-credit-card"></i> Pay Bill
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loans Section -->
+            <section id="loans" class="content-section">
+                <div class="page-header">
+                    <h2><i class="fas fa-hand-holding-usd"></i> Loans</h2>
+                    <button id="applyLoanBtn" class="primary-btn">
+                        <i class="fas fa-plus"></i> Apply for Loan
+                    </button>
+                </div>
+
+                <div id="loansList" class="loans-grid">
+                    <!-- Loans will be loaded here -->
+                </div>
+
+                <!-- Loan Application Modal -->
+                <div id="loanModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-hand-holding-usd"></i> Apply for Loan</h3>
+                            <button class="close-btn" onclick="closeLoanModal()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <form id="loanApplicationForm">
+                            <div class="form-group">
+                                <label>Loan Type</label>
+                                <select id="loanType" required>
+                                    <option value="">Select Loan Type</option>
+                                    <option value="personal">Personal Loan (8.5% APR)</option>
+                                    <option value="home">Home Loan (6.2% APR)</option>
+                                    <option value="auto">Auto Loan (4.8% APR)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Loan Amount</label>
+                                <input type="number" id="loanAmount" min="1000" placeholder="Minimum $1,000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Purpose</label>
+                                <input type="text" id="loanPurpose" placeholder="What will you use this loan for?" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Annual Income</label>
+                                <input type="number" id="loanIncome" min="0" placeholder="Your annual income" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Employment Status</label>
+                                <select id="loanEmployment" required>
+                                    <option value="">Select Employment Status</option>
+                                    <option value="employed">Employed</option>
+                                    <option value="self_employed">Self Employed</option>
+                                    <option value="unemployed">Unemployed</option>
+                                    <option value="retired">Retired</option>
+                                </select>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="secondary-btn" onclick="closeLoanModal()">Cancel</button>
+                                <button type="submit" class="primary-btn">Apply for Loan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Investments Section -->
+            <section id="investments" class="content-section">
+                <div class="page-header">
+                    <h2><i class="fas fa-chart-line"></i> Investments</h2>
+                    <button id="newInvestmentBtn" class="primary-btn">
+                        <i class="fas fa-plus"></i> New Investment
+                    </button>
+                </div>
+
+                <div id="investmentsList" class="investments-grid">
+                    <!-- Investments will be loaded here -->
+                </div>
+
+                <!-- Investment Modal -->
+                <div id="investmentModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-chart-line"></i> Create Investment</h3>
+                            <button class="close-btn" onclick="closeInvestmentModal()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <form id="investmentForm">
+                            <div class="form-group">
+                                <label>Investment Type</label>
+                                <select id="investmentType" required>
+                                    <option value="">Select Investment Type</option>
+                                    <option value="fixed_deposit">Fixed Deposit (5.5% annually)</option>
+                                    <option value="mutual_fund">Mutual Fund (12.0% annually)</option>
+                                    <option value="stocks">Stocks (15.0% annually)</option>
+                                    <option value="bonds">Bonds (7.0% annually)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Investment Amount</label>
+                                <input type="number" id="investmentAmount" min="100" placeholder="Minimum $100" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Duration (Years)</label>
+                                <input type="number" id="investmentDuration" min="1" max="30" placeholder="1-30 years" required>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="secondary-btn" onclick="closeInvestmentModal()">Cancel</button>
+                                <button type="submit" class="primary-btn">Create Investment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="content-section">
+                <div class="page-header">
+                    <h2><i class="fas fa-user-circle"></i> Profile</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="profileInfo" class="profile-info">
+                            <!-- Profile information will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="messageContainer" class="message-container"></div>
+
+    <!-- New Account Modal -->
+    <div id="newAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> Open New Account</h3>
+                <button class="close-btn" onclick="closeNewAccountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="newAccountForm">
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <select id="newAccountType" required>
+                        <option value="">Select Account Type</option>
+                        <option value="checking">Checking Account</option>
+                        <option value="savings">Savings Account</option>
+                        <option value="business">Business Account</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" onclick="closeNewAccountModal()">Cancel</button>
+                    <button type="submit" class="primary-btn">Open Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
