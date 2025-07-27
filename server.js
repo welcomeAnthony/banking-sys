@@ -31,7 +31,7 @@ let users = [
     firstName: 'Admin',
     lastName: 'User',
     email: 'admin@gmail.com',
-    password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/A5OzKWf7W', // "admin" hashed with bcrypt
+    password: '$2a$12$kpAdLiiKF6J98aWE1HBedOS6Rr.tpzoJdjZKGaNhdz/8NwMJ.VMHa', // "admin" hashed with bcrypt
     phone: '555-0123',
     address: '123 Admin Street, Admin City, AC 12345',
     createdAt: new Date().toISOString(),
@@ -244,6 +244,11 @@ app.post('/api/transfer', authenticateToken, (req, res) => {
       return res.status(404).json({ error: 'Destination account not found' });
     }
 
+    // Prevent transfer to the same account
+    if (fromAccount.accountNumber === toAccountNumber) {
+      return res.status(400).json({ error: 'Cannot transfer money to the same account' });
+    }
+
     // Check sufficient balance
     if (fromAccount.balance < amount) {
       return res.status(400).json({ error: 'Insufficient balance' });
@@ -431,7 +436,26 @@ app.get('/api/loans', authenticateToken, (req, res) => {
 // Investment portfolio
 app.post('/api/investments', authenticateToken, (req, res) => {
   try {
-    const { investmentType, amount, duration } = req.body;
+    const { accountId, investmentType, amount, duration } = req.body;
+
+    // Validate amount
+    if (amount <= 0) {
+      return res.status(400).json({ error: 'Invalid investment amount' });
+    }
+
+    // Find account and validate ownership
+    const account = accounts.find(acc => acc.id === accountId && acc.userId === req.user.userId);
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    // Check sufficient balance
+    if (account.balance < amount) {
+      return res.status(400).json({ error: 'Insufficient balance for investment' });
+    }
+
+    // Deduct amount from account
+    account.balance -= amount;
 
     const returns = {
       'fixed_deposit': 5.5,
@@ -443,6 +467,7 @@ app.post('/api/investments', authenticateToken, (req, res) => {
     const investment = {
       id: uuidv4(),
       userId: req.user.userId,
+      accountId: accountId,
       investmentType,
       amount,
       duration,
@@ -454,9 +479,30 @@ app.post('/api/investments', authenticateToken, (req, res) => {
 
     investments.push(investment);
 
+    // Create transaction record
+    const transaction = {
+      id: uuidv4(),
+      transactionId: generateTransactionId(),
+      accountId: account.id,
+      type: 'debit',
+      amount: -amount,
+      balance: account.balance,
+      description: `Investment: ${investmentType.replace('_', ' ')} for ${duration} years`,
+      timestamp: new Date().toISOString(),
+      investmentDetails: {
+        investmentId: investment.id,
+        investmentType,
+        duration,
+        expectedReturn: investment.expectedReturn
+      }
+    };
+
+    transactions.push(transaction);
+
     res.status(201).json({
       message: 'Investment created successfully',
-      investment
+      investment,
+      newBalance: account.balance
     });
   } catch (error) {
     res.status(500).json({ error: 'Investment creation failed' });

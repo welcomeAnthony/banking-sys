@@ -419,7 +419,7 @@ class BankingApp {
     }
 
     populateAccountSelects() {
-        const selects = ['fromAccount', 'depositAccount', 'withdrawAccount', 'billAccount', 'transactionAccount'];
+        const selects = ['fromAccount', 'depositAccount', 'withdrawAccount', 'billAccount', 'transactionAccount', 'investmentAccount'];
         
         selects.forEach(selectId => {
             const select = document.getElementById(selectId);
@@ -519,11 +519,28 @@ class BankingApp {
 
     async handleTransfer() {
         try {
+            const fromAccountId = document.getElementById('fromAccount').value;
+            const toAccountNumber = document.getElementById('toAccount').value;
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const description = document.getElementById('transferDescription').value;
+
+            if (!fromAccountId) {
+                this.showMessage('Please select a source account', 'error');
+                return;
+            }
+
+            // Find the source account to get its account number
+            const fromAccount = this.accounts.find(acc => acc.id === fromAccountId);
+            if (fromAccount && fromAccount.accountNumber === toAccountNumber) {
+                this.showMessage('Cannot transfer money to the same account', 'error');
+                return;
+            }
+
             const formData = {
-                fromAccountId: document.getElementById('fromAccount').value,
-                toAccountNumber: document.getElementById('toAccount').value,
-                amount: parseFloat(document.getElementById('transferAmount').value),
-                description: document.getElementById('transferDescription').value
+                fromAccountId: fromAccountId,
+                toAccountNumber: toAccountNumber,
+                amount: amount,
+                description: description
             };
 
             await this.makeRequest('/transfer', {
@@ -752,6 +769,9 @@ class BankingApp {
     showInvestmentModal() {
         document.getElementById('investmentModal').classList.add('active');
         
+        // Load accounts for investment selection
+        this.loadAccountsForTransfer();
+        
         // Add direct event listeners after modal is shown
         const closeBtn = document.querySelector('#investmentModal .close-btn');
         const cancelBtn = document.querySelector('#investmentModal .secondary-btn');
@@ -774,9 +794,25 @@ class BankingApp {
 
     async handleInvestment() {
         try {
+            const accountId = document.getElementById('investmentAccount').value;
+            const amount = parseFloat(document.getElementById('investmentAmount').value);
+            
+            if (!accountId) {
+                this.showMessage('Please select an account for investment', 'error');
+                return;
+            }
+
+            // Find selected account to check balance
+            const selectedAccount = this.accounts.find(acc => acc.id === accountId);
+            if (selectedAccount && selectedAccount.balance < amount) {
+                this.showMessage('Insufficient balance in selected account', 'error');
+                return;
+            }
+
             const formData = {
+                accountId: accountId,
                 investmentType: document.getElementById('investmentType').value,
-                amount: parseFloat(document.getElementById('investmentAmount').value),
+                amount: amount,
                 duration: parseInt(document.getElementById('investmentDuration').value)
             };
 
@@ -788,6 +824,7 @@ class BankingApp {
             this.showMessage('Investment created successfully!', 'success');
             this.closeInvestmentModal();
             this.loadInvestments();
+            this.loadAccountsForTransfer(); // Refresh account balances
         } catch (error) {
             this.showMessage(error.message, 'error');
         }
