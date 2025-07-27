@@ -6,6 +6,8 @@ class BankingApp {
         this.user = JSON.parse(localStorage.getItem('bankingUser') || 'null');
         this.accounts = [];
         this.isLoading = false;
+        // Default to false (masked), so "Show Account Numbers" will reveal full numbers
+        this.accountNumbersVisible = localStorage.getItem('bankingAccountNumbersVisible') === 'true';
         
         this.init();
     }
@@ -81,6 +83,10 @@ class BankingApp {
         // Account management
         document.getElementById('newAccountBtn').addEventListener('click', () => {
             this.showNewAccountModal();
+        });
+
+        document.getElementById('toggleAccountNumbersBtn').addEventListener('click', () => {
+            this.toggleAccountNumbersVisibility();
         });
 
         document.getElementById('newAccountForm').addEventListener('submit', (e) => {
@@ -368,6 +374,7 @@ class BankingApp {
         try {
             this.accounts = await this.makeRequest('/accounts');
             this.renderAccounts();
+            this.initializeAccountNumbersVisibility();
         } catch (error) {
             this.showMessage('Failed to load accounts', 'error');
         }
@@ -386,7 +393,7 @@ class BankingApp {
                 <div class="account-header">
                     <span class="account-type">${account.accountType}</span>
                 </div>
-                <div class="account-number">Account: ****${account.accountNumber.slice(-4)}</div>
+                <div class="account-number" data-full="${account.accountNumber}">Account: ****${account.accountNumber.slice(-4)}</div>
                 <div class="account-balance">${this.formatCurrency(account.balance)}</div>
             </div>
         `).join('');
@@ -422,6 +429,57 @@ class BankingApp {
     closeNewAccountModal() {
         document.getElementById('newAccountModal').classList.remove('active');
         document.getElementById('newAccountForm').reset();
+    }
+
+    toggleAccountNumbersVisibility() {
+        this.accountNumbersVisible = !this.accountNumbersVisible;
+        
+        const toggleBtn = document.getElementById('toggleAccountNumbersBtn');
+        const accountNumbers = document.querySelectorAll('.account-number');
+        
+        accountNumbers.forEach(element => {
+            const fullNumber = element.getAttribute('data-full');
+            if (this.accountNumbersVisible) {
+                // Show full account numbers
+                element.textContent = `Account: ${fullNumber}`;
+            } else {
+                // Show masked account numbers
+                element.textContent = `Account: ****${fullNumber.slice(-4)}`;
+            }
+        });
+        
+        // Update button text
+        if (this.accountNumbersVisible) {
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Account Numbers';
+        } else {
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Show Account Numbers';
+        }
+        
+        // Save preference to localStorage
+        localStorage.setItem('bankingAccountNumbersVisible', this.accountNumbersVisible.toString());
+    }
+
+    initializeAccountNumbersVisibility() {
+        const toggleBtn = document.getElementById('toggleAccountNumbersBtn');
+        const accountNumbers = document.querySelectorAll('.account-number');
+        
+        accountNumbers.forEach(element => {
+            const fullNumber = element.getAttribute('data-full');
+            if (this.accountNumbersVisible) {
+                // Show full account numbers
+                element.textContent = `Account: ${fullNumber}`;
+            } else {
+                // Show masked account numbers  
+                element.textContent = `Account: ****${fullNumber.slice(-4)}`;
+            }
+        });
+        
+        // Update button text
+        if (this.accountNumbersVisible) {
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Account Numbers';
+        } else {
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Show Account Numbers';
+        }
     }
 
     async handleNewAccount() {

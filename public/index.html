@@ -202,9 +202,14 @@
             <section id="accounts" class="content-section">
                 <div class="page-header">
                     <h2><i class="fas fa-wallet"></i> My Accounts</h2>
-                    <button id="newAccountBtn" class="primary-btn">
-                        <i class="fas fa-plus"></i> Open New Account
-                    </button>
+                    <div class="page-header-actions">
+                        <button id="toggleAccountNumbersBtn" class="secondary-btn">
+                            <i class="fas fa-eye-slash"></i> Hide Account Numbers
+                        </button>
+                        <button id="newAccountBtn" class="primary-btn">
+                            <i class="fas fa-plus"></i> Open New Account
+                        </button>
+                    </div>
                 </div>
 
                 <div id="accountsList" class="accounts-grid">
@@ -227,6 +232,7 @@
                             <form id="transferForm">
                                 <div class="form-group">
                                     <label>From Account</label>
+                                    <i class="fas fa-wallet"></i>
                                     <select id="fromAccount" required>
                                         <option value="">Select Account</option>
                                     </select>
@@ -258,6 +264,7 @@
                             <form id="depositForm">
                                 <div class="form-group">
                                     <label>Account</label>
+                                    <i class="fas fa-wallet"></i>
                                     <select id="depositAccount" required>
                                         <option value="">Select Account</option>
                                     </select>
@@ -285,6 +292,7 @@
                             <form id="withdrawForm">
                                 <div class="form-group">
                                     <label>Account</label>
+                                    <i class="fas fa-wallet"></i>
                                     <select id="withdrawAccount" required>
                                         <option value="">Select Account</option>
                                     </select>
@@ -315,6 +323,7 @@
                 <div class="transaction-filters">
                     <div class="form-group">
                         <label>Account</label>
+                        <i class="fas fa-wallet"></i>
                         <select id="transactionAccount">
                             <option value="">All Accounts</option>
                         </select>
@@ -348,12 +357,14 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Pay From Account</label>
+                                    <i class="fas fa-wallet"></i>
                                     <select id="billAccount" required>
                                         <option value="">Select Account</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Bill Type</label>
+                                    <i class="fas fa-file-invoice-dollar"></i>
                                     <select id="billType" required>
                                         <option value="">Select Bill Type</option>
                                         <option value="electricity">Electricity</option>
@@ -413,6 +424,7 @@
                         <form id="loanApplicationForm">
                             <div class="form-group">
                                 <label>Loan Type</label>
+                                <i class="fas fa-hand-holding-usd"></i>
                                 <select id="loanType" required>
                                     <option value="">Select Loan Type</option>
                                     <option value="personal">Personal Loan (8.5% APR)</option>
@@ -434,6 +446,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Employment Status</label>
+                                <i class="fas fa-briefcase"></i>
                                 <select id="loanEmployment" required>
                                     <option value="">Select Employment Status</option>
                                     <option value="employed">Employed</option>
@@ -476,6 +489,7 @@
                         <form id="investmentForm">
                             <div class="form-group">
                                 <label>Investment Type</label>
+                                <i class="fas fa-chart-line"></i>
                                 <select id="investmentType" required>
                                     <option value="">Select Investment Type</option>
                                     <option value="fixed_deposit">Fixed Deposit (5.5% annually)</option>
@@ -536,6 +550,7 @@
             <form id="newAccountForm">
                 <div class="form-group">
                     <label>Account Type</label>
+                    <i class="fas fa-university"></i>
                     <select id="newAccountType" required>
                         <option value="">Select Account Type</option>
                         <option value="checking">Checking Account</option>

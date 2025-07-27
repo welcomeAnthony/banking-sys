@@ -25,8 +25,30 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 
 // In-memory database (In production, use a real database)
-let users = [];
-let accounts = [];
+let users = [
+  {
+    id: 'admin-user-id-123',
+    firstName: 'Admin',
+    lastName: 'User',
+    email: 'admin@gmail.com',
+    password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/A5OzKWf7W', // "admin" hashed with bcrypt
+    phone: '555-0123',
+    address: '123 Admin Street, Admin City, AC 12345',
+    createdAt: new Date().toISOString(),
+    isActive: true
+  }
+];
+let accounts = [
+  {
+    id: 'admin-account-id-123',
+    userId: 'admin-user-id-123',
+    accountNumber: '1234567890',
+    accountType: 'checking',
+    balance: 10000,
+    isActive: true,
+    createdAt: new Date().toISOString()
+  }
+];
 let transactions = [];
 let loans = [];
 let investments = [];

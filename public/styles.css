@@ -212,6 +212,17 @@ body {
     transform: translateY(-50%);
     color: var(--text-muted);
     z-index: 1;
+    margin-top: 20px; /* Offset for label height and margin */
+}
+
+/* For form groups in auth forms (no label offset needed) */
+.auth-form .form-group i {
+    margin-top: 0;
+}
+
+/* Specific positioning for transaction filters */
+.transaction-filters .form-group i {
+    margin-top: 20px;
 }
 
 .form-group input,
@@ -381,6 +392,12 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
+.page-header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
 .page-header h2 {
     color: var(--text-primary);
     font-size: 2rem;
@@ -502,6 +519,7 @@ body {
     color: var(--text-muted);
     font-size: 0.9rem;
     margin-bottom: 10px;
+    transition: visibility 0.3s ease;
 }
 
 .account-balance {
